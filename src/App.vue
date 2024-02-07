@@ -12,7 +12,9 @@ export default {
   },
   data: () => ({ store }),
   methods: {
-
+    logEvent(string) {
+      console.log(string);
+    },
     // Metodo per ottenere 20 film in base alla query che li filtra per titolo
     fetchMoviesByQuery(query) {
       store.isLoading = true;
@@ -32,15 +34,12 @@ export default {
         store.isLoading = false;
       })
     }
-  },
-  created() { // Lancio il metodo alla creazione dell'app vue per testarlo
-    this.fetchMoviesByQuery('potter');
   }
 }
 </script>
 
 <template>
-  <AppHeader />
+  <AppHeader @submitSearch="fetchMoviesByQuery" />
   <AppMain />
 </template>
 

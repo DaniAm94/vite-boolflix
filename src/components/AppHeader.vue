@@ -2,7 +2,8 @@
 import SearchBar from './SearchBar.vue';
 export default {
     name: 'App Header',
-    components: { SearchBar }
+    components: { SearchBar },
+    emits: ['submitSearch']
 }
 </script>
 
@@ -11,7 +12,7 @@ export default {
         <h1>Header</h1>
 
 
-        <SearchBar />
+        <SearchBar @submitText="$emit('submitSearch', $event)" :placeholder="'Cerca film...'" />
 
 
 

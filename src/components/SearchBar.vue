@@ -4,13 +4,21 @@ export default {
     data: () => ({
         searchText: ''
     }),
-    emits: ['submit-text']
+    props: {
+        placeholder: String
+    },
+    emits: ['submitText'],
+    methods: {
+        clearForm() {
+            this.searchText = '';
+        }
+    }
 }
 </script>
 
 <template>
-    <form @submit.prevent="$emit('submit-text', searchText)">
-        <input v-model="searchText" type="text" placeholder="Scrivi...">
-        <button class="btn border text-white" type="button">Search</button>
+    <form @submit.prevent="$emit('submitText', searchText)">
+        <input @click="clearForm" v-model.trim="searchText" type="text" :placeholder="placeholder || 'Scrivi...'">
+        <button class="btn border text-white">Search</button>
     </form>
 </template>
