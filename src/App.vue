@@ -1,7 +1,7 @@
 <script>
 
 import { store } from './assets/data/store';
-import { endpointMovies } from './assets/data';
+import { endpointMovies, endpointSeries } from './assets/data';
 import axios from 'axios';
 import AppHeader from './components/AppHeader.vue';
 import AppMain from './components/AppMain.vue';
@@ -15,10 +15,10 @@ export default {
     logEvent(string) {
       console.log(string);
     },
-    // Metodo per ottenere 20 film in base alla query che li filtra per titolo
-    fetchMoviesByQuery(query) {
+    // Metodo per ottenere 20 film e seriet TV in base alla query che li filtra per titolo
+    fetchMoviesAndSeriesByQuery(query) {
       store.isLoading = true;
-      axios.get(endpointMovies + `?api_key=99ef5bb01d00e4a25accc86d90c0e8b1&query=${query}&language=it-IT`).then(res => {
+      axios.get(endpointMovies + `&query=${query}&language=it-IT`).then(res => {
         store.movies = res.data.results.map(movie => {
           return {
             id: movie.id,
@@ -30,8 +30,21 @@ export default {
         })
       }).catch(err => {
         console.error(err)
+      })
+      axios.get(endpointSeries + `&query=${query}&language=it-IT`).then(res => {
+        store.series = res.data.results.map(series => {
+          return {
+            id: series.id,
+            title: series.name,
+            originalTitle: series.original_name,
+            language: series.original_language,
+            vote: series.vote_average
+          }
+        })
+      }).catch(err => {
+        console.error(err)
       }).then(() => {
-        store.isLoading = false;
+        store.isLoading = false
       })
     }
   }
@@ -39,8 +52,8 @@ export default {
 </script>
 
 <template>
-  <AppHeader @submitSearch="fetchMoviesByQuery" />
-  <AppMain :movies="store.movies" />
+  <AppHeader @submitSearch="fetchMoviesAndSeriesByQuery" />
+  <AppMain :movies="store.movies" :series="store.series" />
 </template>
 
 <style></style>

@@ -3,7 +3,8 @@ import DisplayList from './DisplayList.vue';
 export default {
     name: 'App Main',
     props: {
-        movies: Array
+        movies: Array,
+        series: Array
     },
     components: {
         DisplayList
@@ -12,9 +13,14 @@ export default {
 </script>
 
 <template>
-    <main>
-        <DisplayList :listTitle="'Movies'" :list="movies" />
+    <main v-if="movies.length" class="container-sm">
+        <DisplayList :listTitle="'Movies'" :list="movies" class="mb-5" />
+        <DisplayList :listTitle="'Series'" :list="series" />
     </main>
 </template>
 
-<style></style>
+<style scoped>
+main {
+    padding: 40px 0;
+}
+</style>

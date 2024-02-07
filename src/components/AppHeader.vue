@@ -8,11 +8,14 @@ export default {
 </script>
 
 <template>
-    <header class="bg-primary d-flex justify-content-between align-items-center">
-        <h1>Header</h1>
+    <header class="bg-primary">
+        <div class="container-sm d-flex justify-content-between align-items-center">
+
+            <h1>Header</h1>
 
 
-        <SearchBar @submitText="$emit('submitSearch', $event)" :placeholder="'Cerca film...'" />
+            <SearchBar @submitText="$emit('submitSearch', $event)" :placeholder="'Cerca film...'" />
+        </div>
 
 
 

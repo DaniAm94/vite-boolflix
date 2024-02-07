@@ -13,11 +13,11 @@ export default {
 </script>
 
 <template>
-    <section class="container-fluid">
+    <section>
         <h2>{{ listTitle }}</h2>
         <div class="row row-cols-5 row-gap-4">
-            <div v-for="movie in list" :key="movie.id" class="col">
-                <BaseCard :element="movie" />
+            <div v-for="media in list" :key="media.id" class="col">
+                <BaseCard :element="media" />
             </div>
         </div>
     </section>
