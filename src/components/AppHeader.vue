@@ -1,5 +1,9 @@
 <script>
-export default {}
+import SearchBar from './SearchBar.vue';
+export default {
+    name: 'App Header',
+    components: { SearchBar }
+}
 </script>
 
 <template>
@@ -7,11 +11,8 @@ export default {}
         <h1>Header</h1>
 
 
+        <SearchBar />
 
-        <form>
-            <input type="text" placeholder="Scrivi...">
-            <button class="btn border text-white" type="button">Search</button>
-        </form>
 
 
     </header>

@@ -33,7 +33,7 @@ export default {
       })
     }
   },
-  created() {
+  created() { // Lancio il metodo alla creazione dell'app vue per testarlo
     this.fetchMoviesByQuery('potter');
   }
 }
