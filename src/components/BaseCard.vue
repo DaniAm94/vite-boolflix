@@ -15,7 +15,7 @@ export default {
 
 <template>
     <div class="card">
-        <div class="card-info bg-black text-white p-3 ">
+        <div class="card-info bg-black text-white p-3 d-flex flex-column justify-content-between ">
             <div>Titolo: {{ element.title }}</div>
             <div>Titolo originale: {{ element.originalTitle }}</div>
 
@@ -30,6 +30,14 @@ export default {
 </template>
 
 <style scoped>
+.card {
+    height: 200px;
+
+    .card-info {
+        height: 100%;
+    }
+}
+
 img {
     max-height: 20px;
 }
