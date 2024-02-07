@@ -1,20 +1,19 @@
 <script>
+import DisplayList from './DisplayList.vue';
 export default {
     name: 'App Main',
     props: {
         movies: Array
+    },
+    components: {
+        DisplayList
     }
 }
 </script>
 
 <template>
     <main>
-        <ul v-for="movie in movies" :key="movie.id">
-            <li>Titolo: {{ movie.title }}</li>
-            <li>Titolo originale: {{ movie.originalTitle }}</li>
-            <li>Lingua: {{ movie.language }}</li>
-            <li>Voto: {{ movie.vote }}</li>
-        </ul>
+        <DisplayList :listTitle="'Movies'" :list="movies" />
     </main>
 </template>
 
