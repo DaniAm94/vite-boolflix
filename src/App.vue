@@ -40,7 +40,7 @@ export default {
 
 <template>
   <AppHeader @submitSearch="fetchMoviesByQuery" />
-  <AppMain />
+  <AppMain :movies="store.movies" />
 </template>
 
 <style></style>
