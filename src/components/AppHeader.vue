@@ -14,7 +14,8 @@ export default {
             <h1>Header</h1>
 
 
-            <SearchBar @submitText="$emit('submitSearch', $event)" :placeholder="'Cerca film...'" />
+            <SearchBar @submitText="$emit('submitSearch', $event)" :placeholder="'Cerca film e serie...'"
+                :buttonLabel="'Search'" />
         </div>
 
 

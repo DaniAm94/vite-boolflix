@@ -5,7 +5,8 @@ export default {
         searchText: ''
     }),
     props: {
-        placeholder: String
+        placeholder: String,
+        buttonLabel: String
     },
     emits: ['submitText'],
     methods: {
@@ -19,6 +20,6 @@ export default {
 <template>
     <form @submit.prevent="$emit('submitText', searchText)">
         <input @click="clearForm" v-model.trim="searchText" type="text" :placeholder="placeholder || 'Scrivi...'">
-        <button class="btn border text-white">Search</button>
+        <button class="btn border text-white">{{ buttonLabel }}</button>
     </form>
 </template>
