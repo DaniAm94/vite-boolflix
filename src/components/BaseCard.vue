@@ -8,7 +8,7 @@ export default {
     },
     computed: {
         hasFlag() {
-            const flags = ['en', 'it', 'de', 'ja', 'ko', 'cn', 'pl', 'es', 'ru', 'pt', 'tr', 'fr'];
+            const flags = ['en', 'it', 'de', 'ja', 'ko', 'cn', 'pl', 'es', 'ru', 'pt', 'tr', 'fr', 'sv', 'tl', 'zh', 'ca'];
             return flags.includes(this.element.language);
         },
         imgPath() {
