@@ -27,11 +27,12 @@ export default {
 
 header {
     padding: 20px 0;
-    background-color: $black;
+    background-color: $black-transparent;
     color: $red;
     position: sticky;
     top: 0;
     left: 0;
     z-index: 2;
+    box-shadow: 0 2px 15px white;
 }
 </style>

@@ -14,7 +14,7 @@ export default {
 
 <template>
     <section>
-        <h2>{{ listTitle }}</h2>
+        <h2 class="section-title">{{ listTitle }}</h2>
         <div class="row row-cols-5 row-gap-4">
             <div v-for="media in list" :key="media.id" class="col">
                 <BaseCard :element="media" />
@@ -22,3 +22,9 @@ export default {
         </div>
     </section>
 </template>
+
+<style scoped>
+.section-title {
+    color: white;
+}
+</style>

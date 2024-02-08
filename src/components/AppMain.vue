@@ -19,8 +19,11 @@ export default {
     </main>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '../assets/scss/vars' as *;
+
 main {
     padding: 40px 0;
+    background-color: $black;
 }
 </style>
