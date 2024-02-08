@@ -39,7 +39,9 @@ export default {
         <img :src="posterPath" :alt="element.name">
         <ul class="card-info bg-black list-unstyled mb-0 ">
             <li><strong>Titolo:</strong> {{ element.title }}</li>
-            <li><strong>Titolo originale:</strong> {{ element.originalTitle }}</li>
+            <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale:</strong> {{
+                element.originalTitle
+            }}</li>
 
             <li class="d-flex align-items-center column-gap-3"><strong>Lingua:</strong>
                 <img class="img-fluid flag" v-if="hasFlag" :src="imgPath" :alt="element.language">
@@ -85,6 +87,8 @@ export default {
         .star {
             color: yellow
         }
+
+
     }
 
     &:hover>.card-info {
