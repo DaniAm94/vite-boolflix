@@ -12,49 +12,72 @@ export default {
   },
   data: () => ({ store }),
   methods: {
-    logEvent(string) {
-      console.log(string);
+
+    /**
+     * this method set the filter to fetch productions
+     * @param {String} term the filter applied to the title
+     */
+    setTitleFilter(term) {
+      store.titleFilter = term.trim();
+    },
+
+    /*
+      Metodo che raccoglio 20 produzioni il cui tipo dipende dall'endpoint;
+       la collection stabilisce la chiave dello store in cui inserirle;
+        il title key cattura il titolo della singola produzione la cui chiave cambia se si tratta di film o serie
+     */
+    fetchApi(endpoint, collection, titleKey) {
+
+      const { apiUri, apiKey, language } = api;
+      const apiConfig = {
+        params: {
+          query: store.titleFilter,
+          api_key: apiKey,
+          language
+        }
+      }
+      /* Oppure  
+      const params = {
+          query,
+          api_key: apiKey,
+          language
+        }
+
+        axios.get(`${apiUri}search/movie`, { params })
+      */
+
+      axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
+        store[collection] = res.data.results.map(production => {
+          return {
+            id: production.id,
+            title: production[titleKey],
+            originalTitle: production[`original_${titleKey}`],
+            language: production.original_language,
+            vote: production.vote_average,
+            poster: api.apiPosterUri + production.poster_path
+          }
+        })
+      }).catch(err => {
+        console.error(err)
+      })
     },
     // Metodo per ottenere 20 film e seriet TV in base alla query che li filtra per titolo
-    fetchMoviesAndSeriesByQuery(query) {
-      store.isLoading = true;
-      axios.get(api.apiUri + `search/movie?api_key=${api.apiKey}&query=${query}&language=${api.language}`).then(res => {
-        store.movies = res.data.results.map(movie => {
-          return {
-            id: movie.id,
-            title: movie.title,
-            originalTitle: movie.original_title,
-            language: movie.original_language,
-            vote: movie.vote_average,
-            poster: api.apiPosterUri + movie.poster_path
-          }
-        })
-      }).catch(err => {
-        console.error(err)
-      })
-      axios.get(api.apiUri + `search/tv?api_key=${api.apiKey}&query=${query}&language=${api.language}`).then(res => {
-        store.series = res.data.results.map(series => {
-          return {
-            id: series.id,
-            title: series.name,
-            originalTitle: series.original_name,
-            language: series.original_language,
-            vote: series.vote_average,
-            poster: api.apiPosterUri + series.poster_path
-          }
-        })
-      }).catch(err => {
-        console.error(err)
-      }).then(() => {
-        store.isLoading = false
-      })
+    fetchMoviesAndSeries() {
+      // se il filtro di ricerca è vuoto svuota gli array movies e series e fermati
+      if (!store.titleFilter) {
+        store.movies = [];
+        store.series = [];
+        return;
+      }
+      this.fetchApi('search/movie', 'movies', 'title');
+      this.fetchApi('search/tv', 'series', 'name');
     }
   }
 }
 </script>
 
 <template>
-  <AppHeader @submitSearch="fetchMoviesAndSeriesByQuery" />
+  <AppHeader @submitSearch="fetchMoviesAndSeries" @changeQuery="setTitleFilter" />
   <AppMain :movies="store.movies" :series="store.series" />
 </template>
 

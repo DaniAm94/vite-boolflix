@@ -7,7 +7,7 @@ export default {
     props: {
         placeholder: String,
     },
-    emits: ['submitText'],
+    emits: ['submitText', 'changeText'],
     methods: {
         clearForm() {
             this.searchText = '';
@@ -17,8 +17,9 @@ export default {
 </script>
 
 <template>
-    <form @submit.prevent="$emit('submitText', searchText)">
-        <input @click="clearForm" v-model.trim="searchText" type="text" :placeholder="placeholder || 'Scrivi...'">
+    <form @submit.prevent="$emit('submitText')">
+        <input v-model="searchText" @keyup="$emit('changeText', searchText)" @click="clearForm" type="text"
+            :placeholder="placeholder || 'Scrivi...'">
         <button class="btn border text-white">
             <FontAwesomeIcon class="icon" icon="magnifying-glass" />
         </button>
