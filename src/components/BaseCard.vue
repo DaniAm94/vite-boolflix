@@ -38,13 +38,13 @@ export default {
     <div class="card">
         <img :src="posterPath" :alt="element.name">
         <ul class="card-info bg-black list-unstyled mb-0 ">
-            <li><strong>Titolo:</strong> {{ element.title }}</li>
-            <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale:</strong> {{
+            <li><strong>Titolo</strong> {{ element.title }}</li>
+            <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale</strong> {{
                 element.originalTitle
             }}</li>
 
-            <li class="d-flex align-items-center column-gap-3"><strong>Lingua:</strong>
-                <img class="img-fluid flag" v-if="hasFlag" :src="imgPath" :alt="element.language">
+            <li><strong>Lingua</strong>
+                <img class="img-fluid flag mt-2" v-if="hasFlag" :src="imgPath" :alt="element.language">
                 <span v-else>{{ element.language.toUpperCase() }}</span>
             </li>
             <li>
@@ -61,6 +61,7 @@ export default {
 
 
     .card-info {
+        font-size: 0.8rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -82,12 +83,16 @@ export default {
 
         strong {
             color: red;
+            display: block;
         }
 
         .star {
             color: yellow
         }
 
+        li {
+            text-align: center;
+        }
 
     }
 
