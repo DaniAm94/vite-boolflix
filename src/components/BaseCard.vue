@@ -8,7 +8,7 @@ export default {
     },
     computed: {
         hasFlag() {
-            const flags = ['en', 'it'];
+            const flags = ['en', 'it', 'de', 'ja', 'ko', 'cn', 'pl', 'es', 'ru', 'pt', 'tr', 'fr'];
             return flags.includes(this.element.language);
         },
         imgPath() {
@@ -46,8 +46,8 @@ export default {
                 <span v-else>{{ element.language.toUpperCase() }}</span>
             </li>
             <li>
-                <FontAwesomeIcon v-for="star in fullStars" icon="fas fa-star" />
-                <FontAwesomeIcon v-for="star in emptyStars" icon="far fa-star" />
+                <FontAwesomeIcon class="star" v-for="(star, i) in fullStars" :key="i" icon="fas fa-star" />
+                <FontAwesomeIcon class="star" v-for="(star, i) in emptyStars" icon="far fa-star" />
 
             </li>
         </ul>
@@ -81,6 +81,10 @@ export default {
         strong {
             color: red;
         }
+
+        .star {
+            color: yellow
+        }
     }
 
     &:hover>.card-info {
@@ -92,8 +96,7 @@ export default {
 
 }
 
-
-img.flag {
+li>img.flag {
     max-height: 20px;
 }
 </style>
