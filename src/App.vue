@@ -26,7 +26,7 @@ export default {
        la collection stabilisce la chiave dello store in cui inserirle;
         il title key cattura il titolo della singola produzione la cui chiave cambia se si tratta di film o serie
      */
-    fetchApi(endpoint, collection) {
+    fetchApiByQuery(endpoint, collection) {
 
       const { apiUri, apiKey, language } = api;
       const apiConfig = {
@@ -52,6 +52,21 @@ export default {
         console.error(err)
       })
     },
+    fetchApiByGenre(endpoint, collection) {
+      const { apiUri, apiKey, language } = api;
+      const apiConfig = {
+        params: {
+          with_genres: store.selectedGenre,
+          api_key: apiKey,
+          language
+        }
+      }
+      axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
+        store[collection] = res.data.results.map(mapProductions)
+      }).catch(err => {
+        console.error(err)
+      })
+    },
     // Metodo per ottenere 20 film e seriet TV in base alla query che li filtra per titolo
     fetchMoviesAndSeries() {
       // se il filtro di ricerca è vuoto svuota gli array movies e series e fermati
@@ -60,15 +75,22 @@ export default {
         store.series = [];
         return;
       }
-      this.fetchApi('search/movie', 'movies');
-      this.fetchApi('search/tv', 'series');
+      this.fetchApiByQuery('search/movie', 'movies');
+      this.fetchApiByQuery('search/tv', 'series');
+    },
+    fetchMovieAndSeriesPerGenre(genreId) {
+      store.selectedGenre = genreId
+      this.fetchApiByGenre('discover/movie', 'movies');
+      this.fetchApiByGenre('discover/tv', 'series');
+
     }
   }
 }
 </script>
 
 <template>
-  <AppHeader @submitSearch="fetchMoviesAndSeries" @changeQuery="setTitleFilter" />
+  <AppHeader @submitSearch="fetchMoviesAndSeries" @changeQuery="setTitleFilter"
+    @changeGenre="fetchMovieAndSeriesPerGenre" />
   <AppMain :movies="store.movies" :series="store.series" />
 </template>
 
