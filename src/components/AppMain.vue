@@ -13,9 +13,12 @@ export default {
 </script>
 
 <template>
-    <main v-if="movies.length" class="container-sm">
-        <DisplayList :listTitle="'Movies'" :list="movies" :section="'movie'" class="mb-5" />
-        <DisplayList :listTitle="'Series'" :list="series" :section="'tv'" />
+    <main v-if="movies.length">
+        <div class="container-sm">
+
+            <DisplayList id="movies" :listTitle="'Movies'" :list="movies" :section="'movie'" class="mb-5" />
+            <DisplayList id="series" :listTitle="'Series'" :list="series" :section="'tv'" />
+        </div>
     </main>
 </template>
 
@@ -23,7 +26,10 @@ export default {
 @use '../assets/scss/vars' as *;
 
 main {
-    padding: 40px 0;
-    background-color: $black;
+    height: calc(100vh - 120px);
+    padding: 100px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 </style>
