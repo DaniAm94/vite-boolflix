@@ -3,13 +3,16 @@ import axios from 'axios'
 import { api } from '../assets/data/'
 export default {
     name: 'Production Card',
-    data: () => ({ cast: [] }),
+    data: () => ({ cast: [], genres: [] }),
     props: {
         element: Object,
         endpoint: String
 
     },
     computed: {
+        mainActors() {
+            return this.cast.splice(0, 5)
+        },
         hasFlag() {
             const flags = ['en', 'it', 'de', 'ja', 'ko', 'cn', 'pl', 'es', 'ru', 'pt', 'tr', 'fr', 'sv', 'tl', 'zh', 'ca'];
             return flags.includes(this.element.language);
@@ -32,17 +35,21 @@ export default {
         }
     },
     created() {
-        const { apiUri, apiKey } = api;
-
-        axios.get(`${apiUri}/${this.endpoint}/${this.element.id}/credits?api_key=${apiKey}`).then(res => {
-            const cast = res.data.cast.map(actor => {
-                return actor.name
+        this.cast = this.fetchProductionDetails('/credits', 'cast');
+        this.genres = this.fetchProductionDetails('', 'genres');
+    },
+    methods: {
+        // Metodo che raccoglie cast o generi di un film
+        fetchProductionDetails(credits, info) {
+            const { apiUri, apiKey } = api;
+            axios.get(`${apiUri}/${this.endpoint}/${this.element.id}${credits}?api_key=${apiKey}`).then(res => {
+                this[info] = res.data[info].map(element => {
+                    return element.name
+                })
+            }).catch(err => {
+                console.error(err)
             })
-            this.cast = cast.splice(0, 5)
-
-        }).catch(err => {
-            console.error(err)
-        })
+        }
     }
 }
 </script>
@@ -66,7 +73,13 @@ export default {
             <li>
                 <strong>Cast</strong>
                 <ul class="list-unstyled">
-                    <li v-for="(actor, i) in cast" :key="i">{{ actor }}</li>
+                    <li v-for="(actor, i) in mainActors" :key="i">{{ actor }}</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Genere</strong>
+                <ul class="list-unstyled">
+                    <li v-for="(genre, i) in genres" :key="i">{{ genre }}</li>
                 </ul>
             </li>
         </ul>
