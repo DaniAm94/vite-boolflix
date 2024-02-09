@@ -31,7 +31,7 @@ export default {
             return Math.round(this.element.vote / 2);
         }
     },
-    created() {
+    mounted() {
         this.cast = this.fetchProductionDetails('/credits', 'cast');
         this.genres = this.fetchProductionDetails('', 'genres');
     },
@@ -75,13 +75,13 @@ export default {
             <li>
                 <FontAwesomeIcon class="star" v-for="n in 5" :key="n" :icon="[n <= starVote ? 'fas' : 'far', 'star']" />
             </li>
-            <li v-if="cast.length">
+            <li v-if="cast && cast.length">
                 <strong>Cast</strong>
                 <ul class="list-unstyled">
                     <li v-for="(actor, i) in cast" :key="i">{{ actor }}</li>
                 </ul>
             </li>
-            <li v-if="genres.length">
+            <li v-if="genres && genres.length">
                 <strong>Genere</strong>
                 <ul class="list-unstyled">
                     <li v-for="(genre, i) in genres" :key="i">{{ genre }}</li>
