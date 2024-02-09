@@ -24,13 +24,13 @@ export default {
                     <li v-if="store.movies.length">
                         <a href="#movies">
                             <img src="../assets/img/movie-icon.png" alt="">
-                            <span class="tooltips">Go to movies</span>
+                            <span class="tooltips">Vai ai film</span>
                         </a>
                     </li>
                     <li v-if="store.series.length">
                         <a href="#series">
                             <img src="../assets/img/tv-icon.png" alt="">
-                            <span class="tooltips">Go to series</span>
+                            <span class="tooltips">Vai alle serie</span>
                         </a>
                     </li>
                 </ul>
