@@ -1,13 +1,16 @@
 <script>
+import { genres } from '../assets/data';
 import SearchBar from './SearchBar.vue';
 import { store } from '../assets/data/store'
 export default {
     name: 'App Header',
     data: () => ({
-        store
+        store,
+        genres,
+        selectedGenre: ''
     }),
     components: { SearchBar },
-    emits: ['submitSearch', 'changeQuery']
+    emits: ['submitSearch', 'changeQuery', 'changeGenre']
 }
 </script>
 
@@ -32,6 +35,10 @@ export default {
                     </li>
                 </ul>
             </nav>
+            <select v-model="selectedGenre" @change="$emit('changeGenre', selectedGenre)">
+                <option selected value="">Genere...</option>
+                <option v-for="genre in genres" :value="genre.id">{{ genre.name }}</option>
+            </select>
 
             <SearchBar @submitText="$emit('submitSearch')" @changeText="$emit('changeQuery', $event)"
                 :placeholder="'Cerca film e serie...'" />
@@ -107,5 +114,16 @@ nav {
     img {
         width: 40px;
     }
+
+}
+
+select {
+    background-color: $black;
+    color: white;
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: outset;
+    height: 34px;
+    padding-left: 15px;
 }
 </style>
