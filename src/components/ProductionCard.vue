@@ -49,7 +49,7 @@ export default {
 
 <template>
     <div class="card">
-        <img :src="posterPath" :alt="element.name">
+        <img :src="posterPath" :alt="element.title">
         <ul class="card-info bg-black list-unstyled mb-0 ">
             <li><strong>Titolo</strong> {{ element.title }}</li>
             <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale</strong> {{
@@ -75,7 +75,13 @@ export default {
 
 <style scoped>
 .card {
+    height: 364px;
 
+    >img {
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+    }
 
     .card-info {
         font-size: 0.8rem;
