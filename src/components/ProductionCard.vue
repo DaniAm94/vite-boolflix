@@ -1,11 +1,13 @@
 <script>
-import { store } from '../assets/data/store'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import axios from 'axios'
+import { api } from '../assets/data/'
 export default {
-    name: 'Base Card',
-    data: () => ({ store }),
+    name: 'Production Card',
+    data: () => ({ cast: [] }),
     props: {
         element: Object,
+        endpoint: String
+
     },
     computed: {
         hasFlag() {
@@ -27,20 +29,21 @@ export default {
         },
         starVote() {
             return Math.round(this.element.vote / 2);
-        },
-        cast() {
-            const currentCast = [];
-            for (let key in store.casts) {
-                console.log(key);
-                console.log(store.casts[key])
-                if (key === this.element.id) {
-                    currentCast = store.casts[key]
-                }
-            }
-            return currentCast
         }
     },
-    components: { FontAwesomeIcon }
+    created() {
+        const { apiUri, apiKey } = api;
+
+        axios.get(`${apiUri}/${this.endpoint}/${this.element.id}/credits?api_key=${apiKey}`).then(res => {
+            const cast = res.data.cast.map(actor => {
+                return actor.name
+            })
+            this.cast = cast.splice(0, 5)
+
+        }).catch(err => {
+            console.error(err)
+        })
+    }
 }
 </script>
 
@@ -61,8 +64,10 @@ export default {
                 <FontAwesomeIcon class="star" v-for="n in 5" :key="n" :icon="[n <= starVote ? 'fas' : 'far', 'star']" />
             </li>
             <li>
-                <strong>Cast:</strong>
-
+                <strong>Cast</strong>
+                <ul class="list-unstyled">
+                    <li v-for="(actor, i) in cast" :key="i">{{ actor }}</li>
+                </ul>
             </li>
         </ul>
     </div>

@@ -1,13 +1,14 @@
 <script>
-import BaseCard from './BaseCard.vue';
+import ProductionCard from './ProductionCard.vue';
 export default {
     name: 'Display list',
     props: {
         listTitle: String,
-        list: Array
+        list: Array,
+        section: String
     },
     components: {
-        BaseCard
+        ProductionCard
     }
 }
 </script>
@@ -17,7 +18,7 @@ export default {
         <h2 class="section-title">{{ listTitle }}</h2>
         <div class="row row-cols-5 row-gap-4">
             <div v-for="(media, i) in list" :key="media.id" class="col">
-                <BaseCard :element="media" />
+                <ProductionCard :element="media" :endpoint="section" />
             </div>
         </div>
     </section>

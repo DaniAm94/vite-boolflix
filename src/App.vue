@@ -48,7 +48,6 @@ export default {
 
       axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
         store[collection] = res.data.results.map(mapProductions)
-        this.fetchAllMoviesCast();
       }).catch(err => {
         console.error(err)
       })
@@ -61,25 +60,8 @@ export default {
         store.series = [];
         return;
       }
-      this.fetchApi('search/movie', 'movies', 'title');
-      this.fetchApi('search/tv', 'series', 'name');
-    },
-    fetchCastPerId(id) {
-      const { apiUri, apiKey } = api;
-
-      axios.get(`${apiUri}/movie/${id}/credits?api_key=${apiKey}`).then(res => {
-        store.casts[id] = res.data.cast.filter((actor, i) => i < 5)
-        // store.casts[id] = res.data.cast.map(actor => {
-        //   return actor.name;
-        // })
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-    fetchAllMoviesCast() {
-      store.movies.forEach(movie => {
-        this.fetchCastPerId(movie.id)
-      })
+      this.fetchApi('search/movie', 'movies');
+      this.fetchApi('search/tv', 'series');
     }
   }
 }

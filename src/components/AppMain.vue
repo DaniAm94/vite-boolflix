@@ -14,8 +14,8 @@ export default {
 
 <template>
     <main v-if="movies.length" class="container-sm">
-        <DisplayList :listTitle="'Movies'" :list="movies" class="mb-5" />
-        <DisplayList :listTitle="'Series'" :list="series" />
+        <DisplayList :listTitle="'Movies'" :list="movies" :section="'movie'" class="mb-5" />
+        <DisplayList :listTitle="'Series'" :list="series" :section="'tv'" />
     </main>
 </template>
 
