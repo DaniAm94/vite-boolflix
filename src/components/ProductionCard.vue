@@ -10,9 +10,6 @@ export default {
 
     },
     computed: {
-        mainActors() {
-            return this.cast.splice(0, 5)
-        },
         hasFlag() {
             const flags = ['en', 'it', 'de', 'ja', 'ko', 'cn', 'pl', 'es', 'ru', 'pt', 'tr', 'fr', 'sv', 'tl', 'zh', 'ca'];
             return flags.includes(this.element.language);
@@ -43,9 +40,17 @@ export default {
         fetchProductionDetails(credits, info) {
             const { apiUri, apiKey } = api;
             axios.get(`${apiUri}/${this.endpoint}/${this.element.id}${credits}?api_key=${apiKey}`).then(res => {
-                this[info] = res.data[info].map(element => {
-                    return element.name
-                })
+                if (info === 'genres') {
+
+                    this[info] = res.data[info].map(element => {
+                        return element.name
+                    })
+                } else {
+                    let fullCast = res.data[info].map(element => {
+                        return element.name;
+                    });
+                    this[info] = fullCast.slice(0, 5);
+                }
             }).catch(err => {
                 console.error(err)
             })
@@ -70,13 +75,13 @@ export default {
             <li>
                 <FontAwesomeIcon class="star" v-for="n in 5" :key="n" :icon="[n <= starVote ? 'fas' : 'far', 'star']" />
             </li>
-            <li>
+            <li v-if="cast.length">
                 <strong>Cast</strong>
                 <ul class="list-unstyled">
-                    <li v-for="(actor, i) in mainActors" :key="i">{{ actor }}</li>
+                    <li v-for="(actor, i) in cast" :key="i">{{ actor }}</li>
                 </ul>
             </li>
-            <li>
+            <li v-if="genres.length">
                 <strong>Genere</strong>
                 <ul class="list-unstyled">
                     <li v-for="(genre, i) in genres" :key="i">{{ genre }}</li>
