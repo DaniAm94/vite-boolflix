@@ -1,7 +1,7 @@
 <script>
 
 import { store } from './assets/data/store';
-import { api } from './assets/data';
+import { api, mapProductions } from './assets/data';
 import axios from 'axios';
 import AppHeader from './components/AppHeader.vue';
 import AppMain from './components/AppMain.vue';
@@ -26,7 +26,7 @@ export default {
        la collection stabilisce la chiave dello store in cui inserirle;
         il title key cattura il titolo della singola produzione la cui chiave cambia se si tratta di film o serie
      */
-    fetchApi(endpoint, collection, titleKey) {
+    fetchApi(endpoint, collection) {
 
       const { apiUri, apiKey, language } = api;
       const apiConfig = {
@@ -47,16 +47,8 @@ export default {
       */
 
       axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
-        store[collection] = res.data.results.map(production => {
-          return {
-            id: production.id,
-            title: production[titleKey],
-            originalTitle: production[`original_${titleKey}`],
-            language: production.original_language,
-            vote: production.vote_average,
-            poster: api.apiPosterUri + production.poster_path
-          }
-        })
+        store[collection] = res.data.results.map(mapProductions)
+        this.fetchAllMoviesCast();
       }).catch(err => {
         console.error(err)
       })
@@ -71,6 +63,23 @@ export default {
       }
       this.fetchApi('search/movie', 'movies', 'title');
       this.fetchApi('search/tv', 'series', 'name');
+    },
+    fetchCastPerId(id) {
+      const { apiUri, apiKey } = api;
+
+      axios.get(`${apiUri}/movie/${id}/credits?api_key=${apiKey}`).then(res => {
+        store.casts[id] = res.data.cast.filter((actor, i) => i < 5)
+        // store.casts[id] = res.data.cast.map(actor => {
+        //   return actor.name;
+        // })
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    fetchAllMoviesCast() {
+      store.movies.forEach(movie => {
+        this.fetchCastPerId(movie.id)
+      })
     }
   }
 }

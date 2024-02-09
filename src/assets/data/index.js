@@ -5,6 +5,16 @@ const api = {
     language: 'it-IT'
 }
 
+const mapProductions = production => ({
+    id: production.id,
+    title: production.title || production.name,
+    originalTitle: production.original_title || production.original_name,
+    language: production.original_language,
+    vote: production.vote_average,
+    poster: api.apiPosterUri + production.poster_path
+})
 
 
-export { api };
+
+
+export { api, mapProductions };

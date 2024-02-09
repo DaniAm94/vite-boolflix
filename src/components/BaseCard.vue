@@ -1,10 +1,11 @@
 <script>
+import { store } from '../assets/data/store'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
 export default {
     name: 'Base Card',
+    data: () => ({ store }),
     props: {
-        element: Object
+        element: Object,
     },
     computed: {
         hasFlag() {
@@ -16,6 +17,7 @@ export default {
             return url.href;
         },
         posterPath() {
+
             if (!this.element.poster.includes('null'))
                 return this.element.poster;
             else {
@@ -23,11 +25,19 @@ export default {
                 return url.href;
             }
         },
-        fullStars() {
-            return Math.floor(this.element.vote * 5 / 10);
+        starVote() {
+            return Math.round(this.element.vote / 2);
         },
-        emptyStars() {
-            return 5 - this.fullStars;
+        cast() {
+            const currentCast = [];
+            for (let key in store.casts) {
+                console.log(key);
+                console.log(store.casts[key])
+                if (key === this.element.id) {
+                    currentCast = store.casts[key]
+                }
+            }
+            return currentCast
         }
     },
     components: { FontAwesomeIcon }
@@ -48,8 +58,10 @@ export default {
                 <span v-else>{{ element.language.toUpperCase() }}</span>
             </li>
             <li>
-                <FontAwesomeIcon class="star" v-for="(star, i) in fullStars" :key="i" icon="fas fa-star" />
-                <FontAwesomeIcon class="star" v-for="(star, i) in emptyStars" icon="far fa-star" />
+                <FontAwesomeIcon class="star" v-for="n in 5" :key="n" :icon="[n <= starVote ? 'fas' : 'far', 'star']" />
+            </li>
+            <li>
+                <strong>Cast:</strong>
 
             </li>
         </ul>
