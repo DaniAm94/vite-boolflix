@@ -18,13 +18,16 @@ export default {
             <h1>BoolFlix</h1>
             <nav>
                 <ul>
-                    <li v-if="store.movies.length"><a href="#movies">
+                    <li v-if="store.movies.length">
+                        <a href="#movies">
                             <img src="../assets/img/movie-icon.png" alt="">
-                        </a></li>
+                            <span class="tooltips">Go to movies</span>
+                        </a>
+                    </li>
                     <li v-if="store.series.length">
                         <a href="#series">
                             <img src="../assets/img/tv-icon.png" alt="">
-
+                            <span class="tooltips">Go to series</span>
                         </a>
                     </li>
                 </ul>
@@ -47,7 +50,6 @@ header {
     align-items: center;
     height: 120px;
     padding: 20px 0;
-    background-color: transparent;
     color: $red;
     box-shadow: 0 2px 15px white inset;
 }
@@ -55,7 +57,7 @@ header {
 nav {
     ul {
         display: flex;
-        column-gap: 1rem;
+        column-gap: 2rem;
         list-style-type: none;
         margin-bottom: 0;
     }
@@ -64,9 +66,42 @@ nav {
         display: block;
         padding: 10px;
         border-radius: 50%;
-        background-image: radial-gradient(white, black);
+        background-image: radial-gradient(grey, white);
         box-shadow: 0 2px 15px white;
+        position: relative;
 
+        .tooltips {
+            padding: 5px 0;
+            text-align: center;
+            border-radius: 10px;
+            width: 120px;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            visibility: hidden;
+            background-color: red;
+            color: white;
+            opacity: 0;
+            transition: opacity 500ms 500ms;
+            z-index: 1;
+        }
+
+        .tooltips::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: red transparent transparent transparent;
+        }
+
+        &:hover>.tooltips {
+            visibility: visible;
+            opacity: 1;
+        }
     }
 
     img {
