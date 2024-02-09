@@ -17,7 +17,7 @@ export default {
 
             <h1>BoolFlix</h1>
             <nav>
-                <ul class="list-unstyled">
+                <ul>
                     <li v-if="store.movies.length"><a href="#movies">
                             <img src="../assets/img/movie-icon.png" alt="">
                         </a></li>
@@ -43,17 +43,21 @@ export default {
 @use '../assets/scss/vars' as *;
 
 header {
+    display: flex;
+    align-items: center;
     height: 120px;
     padding: 20px 0;
     background-color: transparent;
     color: $red;
-    box-shadow: 0 2px 15px white;
+    box-shadow: 0 2px 15px white inset;
 }
 
 nav {
     ul {
         display: flex;
         column-gap: 1rem;
+        list-style-type: none;
+        margin-bottom: 0;
     }
 
     a {
