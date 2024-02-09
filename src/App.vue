@@ -80,6 +80,11 @@ export default {
     },
     fetchMovieAndSeriesPerGenre(genreId) {
       store.selectedGenre = genreId
+      if (!store.selectedGenre) {
+        store.movies = [];
+        store.series = [];
+        return;
+      }
       this.fetchApiByGenre('discover/movie', 'movies');
       this.fetchApiByGenre('discover/tv', 'series');
 
