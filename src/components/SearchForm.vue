@@ -51,7 +51,12 @@ form {
         border-width: 2px;
         border-radius: 10px;
         border-style: outset;
-        padding-left: 15px;
+        padding: 4px 15px;
+
+        &:active,
+        &:hover {
+            border-style: inset;
+        }
     }
 
     input {

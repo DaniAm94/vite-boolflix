@@ -51,8 +51,13 @@ header {
     align-items: center;
     height: 120px;
     padding: 20px 0;
-    color: $red;
-    box-shadow: 0 2px 15px white inset;
+    background-image: linear-gradient(black 90%, $red, white);
+    animation: large-glow 1s ease-in-out infinite alternate;
+
+}
+
+h1 {
+    animation: small-glow-text 1s ease-in-out infinite alternate;
 }
 
 nav {
@@ -67,8 +72,8 @@ nav {
         display: block;
         padding: 10px;
         border-radius: 50%;
-        background-image: radial-gradient(grey, white);
-        box-shadow: 0 2px 15px white;
+        background-image: radial-gradient($red, white 70%);
+        animation: small-glow 1s ease-in-out infinite alternate;
         position: relative;
 
         .tooltips {
@@ -103,6 +108,42 @@ nav {
             visibility: visible;
             opacity: 1;
         }
+    }
+
+    @keyframes small-glow-text {
+        from {
+            text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px $red, 0 0 8px $red, 0 0 10px $red;
+        }
+
+        to {
+            text-shadow: 0 0 4px #fff, 0 0 6px $light-red, 0 0 8px $light-red, 0 0 10px $light-red, 0 0 12px $light-red;
+
+        }
+
+    }
+
+    @keyframes small-glow {
+        from {
+            box-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px $red, 0 0 8px $red, 0 0 10px $red;
+        }
+
+        to {
+            box-shadow: 0 0 4px #fff, 0 0 6px $light-red, 0 0 8px $light-red, 0 0 10px $light-red, 0 0 12px $light-red;
+
+        }
+
+    }
+
+    @keyframes large-glow {
+        from {
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px $red, 0 0 40px $red, 0 0 50px $red;
+        }
+
+        to {
+            box-shadow: 0 0 20px #fff, 0 0 30px $light-red, 0 0 40px $light-red, 0 0 50px $light-red, 0 0 60px $light-red;
+
+        }
+
     }
 
     img {
