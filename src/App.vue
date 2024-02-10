@@ -28,6 +28,7 @@ export default {
       Metodo che raccoglio 20 produzioni il cui tipo dipende dall'endpoint;
        la collection stabilisce la chiave dello store in cui inserirle;
         il title key cattura il titolo della singola produzione la cui chiave cambia se si tratta di film o serie
+        filtra anche per genere se ne è stato selezionato uno
      */
     fetchApiByQuery(endpoint, collection) {
 
@@ -39,7 +40,7 @@ export default {
           language
         }
       }
-      /* Oppure  
+      /*  Oppure  
       const params = {
           query,
           api_key: apiKey,
@@ -77,16 +78,44 @@ export default {
         console.error(err)
       })
     },
-    // Metodo per ottenere 20 film e seriet TV in base alla query che li filtra per titolo
+    // Metodo che raccoglie 20 produzioni (sia film che serie) filtrate solo per il genere scelto
+    fetchApiPerGenre(endpoint, collection) {
+      const { apiUri, apiKey, language } = api;
+      const apiConfig = {
+        params: {
+          with_genres: store.selectedGenre,
+          api_key: apiKey,
+          language
+        }
+      }
+      axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
+        store[collection] = res.data.results.map(mapProductions)
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    // Metodo per ottenere 20 film e seriet TV
     fetchMoviesAndSeries() {
-      // se il filtro di ricerca è vuoto svuota gli array movies e series e fermati
-      if (!store.titleFilter) {
+      /* 
+      se il filtro di ricerca per titolo è vuoto 
+      e non è stato selezionato alcun genere svuota gli array movies e series e fermati
+      */
+      if (!store.titleFilter && !store.selectedGenre) {
         store.movies = [];
         store.series = [];
         return;
       }
-      this.fetchApiByQuery('search/movie', 'movies');
-      this.fetchApiByQuery('search/tv', 'series');
+      // Se è stato selezionato un genere ma non un filtro per titolo
+      // Fa la ricerca solo per genere
+      else if (!store.titleFilter && store.selectedGenre) {
+        this.fetchApiPerGenre('discover/movie', 'movies');
+        this.fetchApiPerGenre('discover/tv', 'series');
+      }
+      //  Altrimenti: se c'è un filtro per titolo 
+      else {
+        this.fetchApiByQuery('search/movie', 'movies');
+        this.fetchApiByQuery('search/tv', 'series');
+      }
     }
   }
 }
