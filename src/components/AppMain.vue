@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-    <main v-if="movies.length">
+    <main>
         <div class="container-sm">
 
             <DisplayList id="movies" :listTitle="'Film'" :list="movies" :section="'movie'" class="mb-5" />

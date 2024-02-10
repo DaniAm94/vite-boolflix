@@ -139,7 +139,7 @@ export default {
             overflow-y: scroll;
             transform: rotateY(180deg);
             padding: 20px 10px;
-            border: 5px groove $red ;
+            border: 2px groove $red ;
 
 
             /* Per nascondere la scrollbar */
