@@ -20,6 +20,9 @@ export default {
     setTitleFilter(term) {
       store.titleFilter = term.trim();
     },
+    setGenre(genre) {
+      store.selectedGenre = genre;
+    },
 
     /*
       Metodo che raccoglio 20 produzioni il cui tipo dipende dall'endpoint;
@@ -47,22 +50,29 @@ export default {
       */
 
       axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
-        store[collection] = res.data.results.map(mapProductions)
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-    fetchApiByGenre(endpoint, collection) {
-      const { apiUri, apiKey, language } = api;
-      const apiConfig = {
-        params: {
-          with_genres: store.selectedGenre,
-          api_key: apiKey,
-          language
+        // Se non è stato selezionato alcun genere prende tutti il risultati della chiamata con un map
+        if (!store.selectedGenre) {
+          store[collection] = res.data.results.map(mapProductions)
+        } else {
+          /* 
+          Altrimenti prende solo quelli che hanno un match positivo con il genere selezionato
+           con un reduce (non uso il filter per non prelevare attributi che non mi interessano)
+           */
+          store[collection] = res.data.results.reduce((result, production) => {
+            if (production.genre_ids.includes(store.selectedGenre)) {
+
+              result.push({
+                id: production.id,
+                title: production.title || production.name,
+                originalTitle: production.original_title || production.original_name,
+                language: production.original_language,
+                vote: production.vote_average,
+                poster: api.apiPosterUri + production.poster_path
+              })
+            }
+            return result;
+          }, [])
         }
-      }
-      axios.get(`${apiUri}/${endpoint}`, apiConfig).then(res => {
-        store[collection] = res.data.results.map(mapProductions)
       }).catch(err => {
         console.error(err)
       })
@@ -77,25 +87,13 @@ export default {
       }
       this.fetchApiByQuery('search/movie', 'movies');
       this.fetchApiByQuery('search/tv', 'series');
-    },
-    fetchMovieAndSeriesPerGenre(genreId) {
-      store.selectedGenre = genreId
-      if (!store.selectedGenre) {
-        store.movies = [];
-        store.series = [];
-        return;
-      }
-      this.fetchApiByGenre('discover/movie', 'movies');
-      this.fetchApiByGenre('discover/tv', 'series');
-
     }
   }
 }
 </script>
 
 <template>
-  <AppHeader @submitSearch="fetchMoviesAndSeries" @changeQuery="setTitleFilter"
-    @changeGenre="fetchMovieAndSeriesPerGenre" />
+  <AppHeader @submitSearch="fetchMoviesAndSeries" @changeQuery="setTitleFilter" @changeGenre="setGenre" />
   <AppMain :movies="store.movies" :series="store.series" />
 </template>
 
