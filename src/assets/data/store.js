@@ -5,5 +5,5 @@ export const store = reactive({
     series: [],
     titleFilter: '',
     selectedGenre: '',
-    isLoading: false,
+    hasSearched: false,
 })

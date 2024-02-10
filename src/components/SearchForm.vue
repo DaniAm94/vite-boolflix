@@ -14,6 +14,7 @@ export default {
     methods: {
         clearForm() {
             this.searchText = '';
+            this.$emit('changeText', this.searchText)
         }
     }
 }

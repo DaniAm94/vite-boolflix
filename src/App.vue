@@ -96,6 +96,8 @@ export default {
     },
     // Metodo per ottenere 20 film e seriet TV
     fetchMoviesAndSeries() {
+
+      store.hasSearched = true;
       /* 
       se il filtro di ricerca per titolo è vuoto 
       e non è stato selezionato alcun genere svuota gli array movies e series e fermati
