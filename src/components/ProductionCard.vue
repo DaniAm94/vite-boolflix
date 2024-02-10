@@ -61,89 +61,112 @@ export default {
 
 <template>
     <div class="card">
-        <img :src="posterPath" :alt="element.title">
-        <ul class="card-info bg-black list-unstyled mb-0 ">
-            <li><strong>Titolo</strong> {{ element.title }}</li>
-            <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale</strong> {{
-                element.originalTitle
-            }}</li>
+        <div class="card-inner">
 
-            <li><strong>Lingua</strong>
-                <img class="img-fluid flag mt-2" v-if="hasFlag" :src="imgPath" :alt="element.language">
-                <span v-else>{{ element.language.toUpperCase() }}</span>
-            </li>
-            <li>
-                <FontAwesomeIcon class="star" v-for="n in 5" :key="n" :icon="[n <= starVote ? 'fas' : 'far', 'star']" />
-            </li>
-            <li v-if="cast && cast.length">
-                <strong>Cast</strong>
-                <ul class="list-unstyled">
-                    <li v-for="(actor, i) in cast" :key="i">{{ actor }}</li>
-                </ul>
-            </li>
-            <li v-if="genres && genres.length">
-                <strong>Genere</strong>
-                <ul class="list-unstyled">
-                    <li v-for="(genre, i) in genres" :key="i">{{ genre }}</li>
-                </ul>
-            </li>
-        </ul>
+            <img :src="posterPath" :alt="element.title">
+            <ul class="card-info list-unstyled mb-0 ">
+                <li><strong>Titolo</strong> {{ element.title }}</li>
+                <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale</strong> {{
+                    element.originalTitle
+                }}</li>
+
+                <li><strong>Lingua</strong>
+                    <img class="img-fluid flag mt-2" v-if="hasFlag" :src="imgPath" :alt="element.language">
+                    <span v-else>{{ element.language.toUpperCase() }}</span>
+                </li>
+                <li>
+                    <FontAwesomeIcon class="star" v-for="n in 5" :key="n" :icon="[n <= starVote ? 'fas' : 'far', 'star']" />
+                </li>
+                <li v-if="cast && cast.length">
+                    <strong>Cast</strong>
+                    <ul class="list-unstyled">
+                        <li v-for="(actor, i) in cast" :key="i">{{ actor }}</li>
+                    </ul>
+                </li>
+                <li v-if="genres && genres.length">
+                    <strong>Genere</strong>
+                    <ul class="list-unstyled">
+                        <li v-for="(genre, i) in genres" :key="i">{{ genre }}</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '../assets/scss/vars' as *;
+
 .card {
     height: 364px;
+    perspective: 1000px;
+    background-color: transparent;
 
-    >img {
+    &:hover>.card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .card-inner {
         height: 100%;
-        object-fit: cover;
-        object-position: center top;
-    }
+        width: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s;
+        border-radius: 10px;
 
-    .card-info {
-        font-size: 0.8rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        row-gap: 1rem;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 0;
-        color: black;
-        overflow-y: scroll;
-
-        /* Per nascondere la scrollbar */
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        /* -------- */
-
-        transition: height 1s, color 2s, padding 1s;
-
-        strong {
-            color: red;
-            display: block;
+        >img,
+        >.card-info {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
         }
 
-        .star {
-            color: yellow
+        >img {
+            object-fit: cover;
+            object-position: center top;
         }
 
-        li {
-            text-align: center;
+        .card-info {
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 1rem;
+            color: white;
+            background-color: $black;
+            overflow-y: scroll;
+            transform: rotateY(180deg);
+            padding: 20px 10px;
+            border: 5px groove $red ;
+
+
+            /* Per nascondere la scrollbar */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            /* -------- */
+
+
+            strong {
+                color: $red;
+                display: block;
+            }
+
+            .star {
+                color: yellow
+            }
+
+            li {
+                text-align: center;
+            }
+
         }
 
+
+
+
     }
-
-    &:hover>.card-info {
-        height: 100%;
-        padding: 30px;
-        color: white;
-    }
-
-
 }
 
 li>img.flag {
