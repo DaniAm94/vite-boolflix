@@ -1,9 +1,11 @@
 <script>
 import axios from 'axios'
 import { api } from '../assets/data/'
+import CardOffcanvas from './CardOffcanvas.vue';
 export default {
     name: 'Production Card',
-    data: () => ({ cast: [], genres: [] }),
+    data: () => ({ cast: [], genres: [], showMore: false }),
+    components: { CardOffcanvas },
     props: {
         element: Object,
         endpoint: String
@@ -54,6 +56,9 @@ export default {
             }).catch(err => {
                 console.error(err)
             })
+        },
+        openOffcanvas() {
+            this.showMore = true;
         }
     }
 }
@@ -65,8 +70,11 @@ export default {
 
             <img :src="posterPath" :alt="element.title">
             <ul class="card-info list-unstyled mb-0 ">
+                <li role="button" class="offcanvas-trigger" @click="openOffcanvas">
+                    <FontAwesomeIcon icon="plus" />
+                </li>
                 <li><strong>Titolo</strong> {{ element.title }}</li>
-                <li v-if="!(element.title === element.originalTitle)"><strong>Titolo originale</strong> {{
+                <li v-if="element.title !== element.originalTitle"><strong>Titolo originale</strong> {{
                     element.originalTitle
                 }}</li>
 
@@ -92,6 +100,8 @@ export default {
             </ul>
         </div>
     </div>
+    <CardOffcanvas @close-offcanvas="showMore = false" v-if="showMore" :production="element" :lang-img="imgPath"
+        :vote="starVote" :genres="genres" :cast="cast" :poster-path="posterPath" />
 </template>
 
 <style lang="scss" scoped>
@@ -171,5 +181,16 @@ export default {
 
 li>img.flag {
     max-height: 20px;
+}
+
+.offcanvas-trigger {
+    position: absolute;
+    top: 10px;
+
+    right: 10px;
+
+    &:hover {
+        transform: scale(1.3);
+    }
 }
 </style>
