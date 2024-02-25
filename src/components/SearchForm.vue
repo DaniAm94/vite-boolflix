@@ -1,9 +1,8 @@
 <script>
-import { genres } from '../assets/data'
+import { store } from '../assets/data/store';
 export default {
     name: 'Search Bar',
     data: () => ({
-        genres,
         searchText: '',
         selectedGenre: ''
     }),
@@ -11,6 +10,16 @@ export default {
         placeholder: String,
     },
     emits: ['submitSearch', 'changeText', 'changeGenre'],
+    computed: {
+        genres() {
+            const combinedGenres = [...store.movieGenres, store.seriesGenres];
+            const uniqueGenresList = combinedGenres.reduce((list, genre) => {
+                if (!list.some(item => item.id === genre.id)) list.push({ value: genre.id, text: genre.name });
+                return list;
+            }, []);
+            return uniqueGenresList;
+        }
+    },
     methods: {
         clearForm() {
             this.searchText = '';
@@ -24,7 +33,7 @@ export default {
     <form @submit.prevent="$emit('submitSearch')">
         <select v-model="selectedGenre" @change="$emit('changeGenre', selectedGenre)">
             <option selected value="">Genere...</option>
-            <option v-for="genre in genres" :value="genre.id">{{ genre.name }}</option>
+            <option v-for="genre in genres" :value="genre.value">{{ genre.text }}</option>
         </select>
         <input v-model="searchText" @keyup="$emit('changeText', searchText)" @click="clearForm" type="text"
             :placeholder="placeholder || 'Scrivi...'">

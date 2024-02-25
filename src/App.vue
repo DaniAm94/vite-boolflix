@@ -120,7 +120,28 @@ export default {
         this.fetchApiByQuery('search/movie', 'movies');
         this.fetchApiByQuery('search/tv', 'series');
       }
+    },
+    fetchGenres() {
+      const { apiUri, apiKey } = api;
+      const apiConfig = {
+        params: {
+          api_key: apiKey,
+        }
+      }
+      axios.get(`${apiUri}/genre/movie/list`, apiConfig).then(res => {
+        store.movieGenres = res.data.genres;
+      }).catch(err => {
+        console.error(err)
+      })
+      axios.get(`${apiUri}/genre/tv/list`, apiConfig).then(res => {
+        store.seriesGenres = res.data.genres;
+      }).catch(err => {
+        console.error(err)
+      })
     }
+  },
+  created() {
+    this.fetchGenres();
   }
 }
 </script>

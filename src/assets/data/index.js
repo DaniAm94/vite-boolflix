@@ -4,42 +4,6 @@ const api = {
     apiPosterUri: 'https://image.tmdb.org/t/p/w342',
     language: 'it-IT'
 }
-const genres = [
-    {
-        id: 16,
-        name: 'Animation'
-    },
-    {
-        id: 35,
-        name: 'Comedy'
-    },
-    {
-        id: 80,
-        name: 'Crime'
-    },
-    {
-        id: 99,
-        name: 'Documentary'
-    },
-    {
-        id: 18,
-        name: 'Drama'
-    },
-    {
-        id: 10751,
-        name: 'Family'
-    },
-    {
-        id: 9648,
-        name: 'Mistery'
-    },
-    {
-        id: 37,
-        name: 'Wester'
-    }
-]
-
-
 
 const mapProductions = production => ({
     id: production.id,
@@ -55,4 +19,4 @@ const mapProductions = production => ({
 
 
 
-export { api, mapProductions, genres };
+export { api, mapProductions };
